@@ -1,48 +1,38 @@
-import streamlit as st
-import trafficaccidentprediction as tp  # Your prediction module
-import pyttsx3 as pt
+# streamlit_traffic_prediction.py
 
-# Streamlit app title
-st.markdown("<h1 style='text-align: center; color: black;'>Traffic Accident Prediction</h1>", unsafe_allow_html=True)
+import streamlit as st
+import pyttsx3
+import trafficprediction as tp  # Make sure this module exists and is in the same directory
+
+# Set up the Streamlit page
+st.set_page_config(page_title="Traffic Prediction App", layout="centered")
+st.title("🚦 Traffic Prediction App")
 
 # Input fields
-weather = st.text_input("Weather Condition")
-road_type = st.text_input("Road Type")
-time_of_day = st.text_input("Time of Day")
-traffic_density = st.number_input("Traffic Density", min_value=0)
-speed_limit = st.number_input("Speed Limit", min_value=0)
-num_vehicles = st.number_input("Number of Vehicles", min_value=0)
-driver_alcohol = st.number_input("Driver Alcohol (1 if under influence, else 0)", min_value=0, max_value=1)
-accident_severity = st.text_input("Accident Severity")
-road_condition = st.text_input("Road Condition")
-vehicle_type = st.text_input("Vehicle Type")
-driver_age = st.number_input("Driver Age", min_value=0)
-driver_experience = st.number_input("Driver Experience (in years)", min_value=0)
-road_light_condition = st.text_input("Road Light Condition")
+date = st.text_input("Date (e.g., 2025-05-01)")
+time = st.text_input("Time (e.g., 14:30)")
+dotw = st.text_input("Day of the Week (e.g., Monday)")
+carcount = st.number_input("Car Count", min_value=0, step=1)
+bikecount = st.number_input("Bike Count", min_value=0, step=1)
+buscount = st.number_input("Bus Count", min_value=0, step=1)
+truckcount = st.number_input("Truck Count", min_value=0, step=1)
 
-# Predict button
+# Button to trigger prediction
 if st.button("Predict"):
-    sample_input = {
-        'Weather': weather.strip(),
-        'Road_Type': road_type.strip(),
-        'Time_of_Day': time_of_day.strip(),
-        'Traffic_Density': traffic_density,
-        'Speed_Limit': speed_limit,
-        'Number_of_Vehicles': num_vehicles,
-        'Driver_Alcohol': driver_alcohol,
-        'Accident_Severity': accident_severity.strip(),
-        'Road_Condition': road_condition.strip(),
-        'Vehicle_Type': vehicle_type.strip(),
-        'Driver_Age': driver_age,
-        'Driver_Experience': driver_experience,
-        'Road_Light_Condition': road_light_condition.strip()
-    }
+    # Input validation (basic)
+    if not date or not time or not dotw:
+        st.warning("Please fill in all the required fields.")
+    else:
+        try:
+            total = carcount + bikecount + buscount + truckcount
+            prediction = tp.function(time, date, dotw, carcount, bikecount, buscount, truckcount, total)
 
-    try:
-        prediction = tp.func(sample_input)
-        st.success(f"Prediction: {prediction}")
-        engine=pt.init()
-        engine.say(f'prediction is {prediction}')
-        engine.runAndWait()
-    except Exception as e:
-        st.error(f"Error in prediction: {e}")
+            st.success(f"🚗 Predicted Traffic Situation: {prediction}")
+
+            # Speak the result
+            engine = pyttsx3.init()
+            engine.say(f"Predicted traffic situation: {prediction}")
+            engine.runAndWait()
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}")
+
