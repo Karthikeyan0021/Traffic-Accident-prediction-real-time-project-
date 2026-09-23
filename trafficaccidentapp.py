@@ -2,7 +2,7 @@
 
 import streamlit as st
 import pyttsx3
-import trafficprediction as tp  # Make sure this module exists and is in the same directory
+import trafficaccidentprediction as tp  # Make sure this module exists and is in the same directory
 
 # Set up the Streamlit page
 st.set_page_config(page_title="Traffic Prediction App", layout="centered")
