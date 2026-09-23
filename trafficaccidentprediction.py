@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score
 
 # Load dataset
-data = pd.read_csv(r"C:\Users\thenn\OneDrive\Desktop\dataset_traffic_accident_prediction1.csv")
+data = pd.read_csv(r"dataset_traffic_accident_prediction1.csv")
 print("Initial data shape:", data.shape)
 
 # Show missing values
