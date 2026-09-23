@@ -23,7 +23,7 @@ from datetime import datetime
 
 """
 
-df = pd.read_csv("Traffic jam.csv")
+df = pd.read_csv("dataset_traffic_accident_prediction1.csv")
 
 print("before cleaning\n\n")
 print(df.isnull().sum())
