@@ -1,7 +1,7 @@
 # streamlit_traffic_prediction.py
 
 import streamlit as st
-import pyttsx3
+
 import trafficaccidentprediction as tp  # Make sure this module exists and is in the same directory
 
 # Set up the Streamlit page
@@ -28,11 +28,6 @@ if st.button("Predict"):
             prediction = tp.function(time, date, dotw, carcount, bikecount, buscount, truckcount, total)
 
             st.success(f"🚗 Predicted Traffic Situation: {prediction}")
-
-            # Speak the result
-            engine = pyttsx3.init()
-            engine.say(f"Predicted traffic situation: {prediction}")
-            engine.runAndWait()
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
 
